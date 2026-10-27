@@ -1,0 +1,24 @@
+{
+  "phase": "0",
+  "environment": {
+    "cloud_shell": true
+  },
+  "python": {
+    "version": "3.12.3",
+    "ok": true
+  },
+  "gcloud": {
+    "account": "soren.faucon@gmail.com",
+    "project": "eurecomgpt-512916",
+    "error": null
+  },
+  "docker": {
+    "version": "Docker version 29.9.2, build a82e528",
+    "present": true
+  },
+  "git": {
+    "remote": "https://github.com/Thesorenxz/Eurecom_Cloud/",
+    "is_github": true,
+    "slug": "Thesorenxz/Eurecom_Cloud"
+  }
+}

@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import json
 import sys
+import re
 from pathlib import Path
 
 # Make the shared `autograder` package importable when run from anywhere.
@@ -38,40 +39,35 @@ REPORT_PATH = REPO_ROOT / "submission" / "phase0_report.json"
 # Functions YOU implement
 # --------------------------------------------------------------------------- #
 def parse_gcloud_config(raw: str) -> dict:
-    """Parse the JSON emitted by ``gcloud config list --format=json``.
-
-    Return ``{"account": <str>, "project": <str>}`` using empty strings when a
-    value is absent. The relevant fields live under the ``"core"`` section, e.g.::
-
-        {"core": {"account": "you@example.com", "project": "my-proj-123"}}
-
-    Args:
-        raw: the raw stdout string from the gcloud command (may be empty).
-    """
-    # TODO: parse `raw` as JSON and return {"account": ..., "project": ...}
-    #       from the "core" section. Return empty strings if raw is empty or a
-    #       field is missing.
-    raise NotImplementedError("Phase 0: implement parse_gcloud_config()")
-
+    empty = {"account": "", "project": ""}
+    if not raw or not raw.strip():
+        return empty
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError:
+        return empty
+    if not isinstance(data, dict):
+        return empty
+    core = data.get("core")
+    if not isinstance(core, dict):
+        return empty
+    return {
+        "account": core.get("account") or "",
+        "project": core.get("project") or "",
+    }
 
 def parse_repo_slug(remote_url: str) -> str:
-    """Turn a GitHub remote URL into an ``owner/repo`` slug (no ``.git`` suffix).
-
-    Must handle both forms git prints:
-
-      * HTTPS: ``https://github.com/eurecom/clouds-lab.git``  -> ``eurecom/clouds-lab``
-      * SSH:   ``git@github.com:eurecom/clouds-lab.git``      -> ``eurecom/clouds-lab``
-
-    Return ``""`` if the URL is empty or not a github.com URL.
-
-    Args:
-        remote_url: output of ``git remote get-url origin`` (may be empty).
-    """
-    # TODO: return "owner/repo" for both the HTTPS and SSH forms shown above.
-    #       Strip any trailing ".git". Return "" if not a github.com URL.
-    raise NotImplementedError("Phase 0: implement parse_repo_slug()")
-
-
+    if not remote_url:
+        return ""
+    pattern = (
+        r"^(?:https?://(?:[^@/]+@)?|ssh://git@|git@)"
+        r"github\.com[:/]([^/\s]+)/([^/\s]+?)(?:\.git)?/?$"
+    )
+    match = re.match(pattern, remote_url.strip())
+    if not match:
+        return ""
+    owner, repo = match.groups()
+    return f"{owner}/{repo}"
 # --------------------------------------------------------------------------- #
 # Provided probes (do not modify)
 # --------------------------------------------------------------------------- #

@@ -1,0 +1,30 @@
+{
+  "phase": "2",
+  "environment": {
+    "colab": true
+  },
+  "attention": {
+    "naive_ms": 694.589,
+    "vectorized_ms": 11.995,
+    "speedup": 57.91
+  },
+  "threads": {
+    "1": 2315.512,
+    "2": 2713.093,
+    "4": 2712.213,
+    "8": 3040.988
+  },
+  "devices": {
+    "cpu_ms": 487526.5,
+    "gpu_ms": 13850.9
+  },
+  "training": {
+    "steps": 2000,
+    "final_loss": 1.4811,
+    "param_count": 4935680
+  },
+  "sample": "\nBARWIOLTA:\nGo cansues, that Clarence, But my boy!\n\nJULIET:\nAway talk the remity mothings die that Clase:\nBepare a while a strible.\n\nSICINIUS:\nHow you wask to kning, my praquer.\n\nPOLONES:\nHow condestay",
+  "model": {
+    "gcs_url": "https://storage.googleapis.com/eurecomgpt-512916-eurecomgpt/model.safetensors"
+  }
+}
